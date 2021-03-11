@@ -4028,7 +4028,19 @@
    "cell_type": "markdown",
    "metadata": {},
    "source": [
-    "**Q: 1** Write a summary of the work in this notebook. Capture the fact that you gained a baseline idea of performance by simply taking the average price and how well that did. Then highlight that you built a linear model and the features that found. Comment on the estimate of its performance from cross-validation and whether its performance on the test split was consistent with this estimate. Also highlight that a random forest regressor was tried, what preprocessing steps were found to be best, and again what its estimated performance via cross-validation was and whether its performance on the test set was consistent with that. State which model you have decided to use going forwards and why. This summary should provide a quick overview for someone wanting to know quickly why the given model was chosen for the next part of the business problem to help guide important business decisions."
+    "**Q: 1** Our source data was imported from the previous notebook. It was a table with features by resort, including the features we engineered to represent portions of states’ markets. We moved “our” resort out of the data, into its own table so it would not influence the modelling. We split our data into 70/30 train/test portions. We dropped the non-numeric columns. Our column of interest with the prices was assigned to be our “Y” train and test while the remaining columns became our “X”s. \n",
+    "\n",
+    "We gained a baseline idea of performance by simply taking the average price ($63.8) and 𝑅2 of that was 0 on the training set. Using this mean to predict values from the test set gave an 𝑅2 of slightly below 0. By using the average of absolute errors we saw we should expect to be about $19 off if using the mean as the predictor so that is our baseline. \n",
+    "\n",
+    "Because some data is missing in the source, we took the median of each features’ values and filled them into the missing fields. Then we scaled the data. Next we built a simple linear regression model. It’s R2 indicated it explained over 70% of the variances on the train and test sets. The average of the absolute errors this time showed we went from within $19 on our predictions to an expected $9. \n",
+    "\n",
+    "Comparing mean with median as choice of impute values showed very little difference and we redid the previous steps but this time in a pipeline. The earlier way was just for learning. \n",
+    "\n",
+    "Then we used our pipeline to try a subset of the features, the Kbest. We didn’t get good results yet so did a cross-validation to try all the different sized subsets. We saw that our performance was variable and sensitive to changes. Next we did a hyperparameter search to pick the value of k that gives the best performance and we got 8. Looking at those 8, we saw vertical drop to be the best at this point. \n",
+    "\n",
+    "We defined another pipeline to try a random forest regressor. We found it worked best with median imputing and no scaling, giving us a little better cross-validation than the last pipeline and now only four features greatly dominate in importance, with FastQuads being the highest. \n",
+    "\n",
+    "After comparing the performance of the linear regression model to the forest regression, we will use the forest. This is because it has lower variability as well as lower C-V MAE. \n"
    ]
   },
   {
